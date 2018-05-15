@@ -49,21 +49,21 @@ ggplot(fish_per_year, aes(x = Year, color = Location)) +
 
 # A creek fish in *year* 
 acreek_fish_2005_return_time <- master_with_distance %>% 
-  filter(Year == "2005") %>% 
+  filter(Year == "2005") %>%    ### Edit year here - then fix name to match year
   group_by(Tag) %>% 
   filter(Date == first(Date)) %>% 
   filter(Location == "a")
 
 # C creek fish in *year*
 ccreek_fish_2010_return_time <- master_with_distance %>% 
-  filter(Year == "2010") %>% 
+  filter(Year == "2010") %>%  ### Edit year here - then fix name to match year
   group_by(Tag) %>% 
   filter(Date == first(Date)) %>% 
   filter(Location == "c")
 
 ## create a scatter plot graph
 ggplot(acreek_fish_2005_return_time, aes(x = Date, y = midpoint, color = Sex)) +
-  geom_point()
+  geom_point()    # plot for a creek  - edit name to match year you want
 ggplot(ccreek_fish_2010_return_time, aes(x = Date, y = midpoint, color = Sex)) +
-  geom_point()
+  geom_point()    # plot for c creek - edit name to match year you want
 
