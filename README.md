@@ -17,3 +17,4 @@ library(tidyverse)
 
 ## Questions we want to answer
 
+1. Does timing in return time vary between male and female?
