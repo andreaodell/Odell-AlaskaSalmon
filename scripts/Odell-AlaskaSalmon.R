@@ -1,6 +1,6 @@
 
 ### Read in file and run packages
-master <- read.csv("data/master_duplicate_removed.csv")
+master <- read.csv("data/autocorrelation_sections_corrected_051118_final.csv.csv")
 distances <- read.csv("data/creek_midpoint.csv")
 library(tidyverse)
 
@@ -9,19 +9,34 @@ master_with_distance <-  cbind(master,midpoint=rep(master$location_section))
 ### replace section location values in midpoint column with midpoint values.
 master_with_distance$midpoint <- distances$midpoint[match(master_with_distance$midpoint, distances$section)]
 
-#remove unnecessary data in Sex column to have only male and female
+
+#remove unnecessary data in Location and Sex column to merge similar vectors
+master_with_distance$Location[master_with_distance$Location == "A" |
+                                master_with_distance$Location == "amouth" |
+                                master_with_distance$Location == "am" |
+                                master_with_distance$Location == "abeach"] <- "a"
+master_with_distance$Location[master_with_distance$Location == "cm" |
+                                master_with_distance$Location == "cbeach" |
+                                master_with_distance$Location == "cmouth"] <- "c"
+
 tolower <- master_with_distance$Sex
-target <- c("f", "m")
+target_sex <- c("f", "m")
 master_with_distance <- master_with_distance %>% 
-  filter(Sex %in% target)
+  filter(Sex %in% target_sex)
 
 
-### How many fish per year
+### How many fish per year showing m:f ratio
 fish_per_year <- master_with_distance %>% 
   group_by(Year)
 
 ggplot(fish_per_year, aes(x = Year, color = Sex)) +
   geom_histogram()
+
+## how many fish per year showing a creek: c creek ratio
+
+ggplot(fish_per_year, aes(x = Year, color = Location)) +
+  geom_histogram()
+
 
 #####################################################################
 #####################################################################
