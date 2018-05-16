@@ -107,4 +107,21 @@ ggplot(location_count_2004_ccreek, aes(x = location_section, y = number_of_fish)
   theme(axis.text.x = element_text(angle = 90, hjust =0.75))
 
 
+# same graph but opens the scope to showing all years by color
+
+location_count_per_year_ccreek<- master %>% 
+  select(Year, Location, location_section) %>% 
+  filter(Location == "c" ) %>%    #### Change the year or creek here!!!! Then change the name accordingly
+  group_by(location_section, Year) %>% 
+  summarise("number_of_fish" = n())
+
+ggplot(location_count_per_year_ccreek, aes(x = location_section, y = number_of_fish, color = Year)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust =0.75))
+
+### not as helpful or insightful as i thought it'd be... lol
+
+
+View(location_count_per_year_ccreek)
+
 

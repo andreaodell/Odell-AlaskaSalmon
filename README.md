@@ -18,3 +18,7 @@ library(tidyverse)
 ## Questions we want to answer
 
 1. Does return time and distance vary between male and female? 
+2. What is the general population structure such as number of fish per year, per creek and sex ratios?
+3. How long do fish generally stay in the creek?
+4. Which sections of the creek are fish generally found?
+
