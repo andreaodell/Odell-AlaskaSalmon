@@ -73,7 +73,10 @@ ggplot(ccreek_fish_2010_return_time, aes(x = Date, y = midpoint, color = Sex)) +
 # How long do fish typically stay in the creek? #
 #################################################
 
+## looks at all years at once...
+
 fish_creek_stay_length <- master %>% 
+  #filter(Year == xxxx) %>%     ### remove hastag if you want to specify a year
   select(Year_Tag, Sex) %>% 
   group_by(Year_Tag) %>% 
   summarise("" = n()) 
@@ -92,7 +95,7 @@ ggplot(fish_creek_stay_length, aes(x = count)) +
 
 location_count_2004_ccreek <- master %>% 
   select(Year, Location, location_section) %>% 
-  filter(Year == 2004, Location == "c" ) %>% 
+  filter(Year == 2004, Location == "c" ) %>%    #### Change the year or creek here!!!! Then change the name accordingly
   group_by(location_section) %>% 
   summarise("number_of_fish" = n())
 
