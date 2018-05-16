@@ -93,6 +93,9 @@ ggplot(fish_creek_stay_length, aes(x = count)) +
 # How many fish per section each year#
 ######################################
 
+## high fish density could mean location of redds and more questions about
+## density dependence can be asked
+
 location_count_2004_ccreek <- master %>% 
   select(Year, Location, location_section) %>% 
   filter(Year == 2004, Location == "c" ) %>%    #### Change the year or creek here!!!! Then change the name accordingly
