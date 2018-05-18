@@ -15,10 +15,18 @@ library(tidyverse)
 1. **data/autocorrelation_sections_corrected_051118_final.csv**: 2004-2016 data of spawning sockeye salmon in A + C creek in Alaska.
 2. **scripts/Odell-AlaskaSalmon**: Manipulating data to answer questions about spawning dynamics
 
-## Questions we want to answer
+## Question we want to answer
+
+**How does the population dynamics vary by year and creek?**
+
+
+We can understand this by looking at smaller, more specific questions including:
 
 1. Does return time and distance vary between male and female? 
 2. What is the general population structure such as number of fish per year, per creek and sex ratios?
 3. How long do fish generally stay in the creek?
 4. Which sections of the creek are fish generally found?
+
+
+
 
