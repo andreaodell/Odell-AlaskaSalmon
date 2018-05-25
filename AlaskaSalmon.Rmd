@@ -22,7 +22,7 @@ library(ggplot2)
 library(dplyr)
 ```
 
-```{r input_files}
+```{r input_files, cache = TRUE}
 master <- read.csv("data/autocorrelation_sections_corrected_051118_final.csv", na.strings = "NA")
 distances <- read.csv("data/creek_midpoint.csv")
 ```
