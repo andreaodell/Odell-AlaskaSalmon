@@ -143,7 +143,7 @@ ggplot(fish_creek_stay_length, aes(x = count)) +
 
 ## Fish Density in section between years
 
-A high fish density could mean preferable location of redds. More questions about density dependence can be asked, including how it affects the precision of homing. Again, it is important to change the year or creek section accordingly!!!
+A high fish density could mean preferable location of redds. More questions about density dependence can be asked, including how it affects the precision of homing. Again, it is important to change the year or creek section accordingly [^1]!!!
 
 ```{r density}
 
@@ -190,3 +190,5 @@ ggplot(location_count_per_year_acreek, aes(x = location_section, y = number_of_f
   labs( x = "Location Section", y = "Number of fish")
 
 ```
+
+[^1]: Instead of having multiple codes for each year, it would only make sense to just have one code and edit it to whatever year/creek we would need. But it is important to update the name assigned to the script when changing the date/creek to match what you changed it to.
