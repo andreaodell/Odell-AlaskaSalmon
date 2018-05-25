@@ -29,14 +29,17 @@ master_with_distance <- master_with_distance %>%
 fish_per_year <- master_with_distance %>% 
   group_by(Year)
 
-ggplot(fish_per_year, aes(x = Year, color = Sex)) +
+sex_ratio_fish_count <- ggplot(fish_per_year, aes(x = Year, color = Sex)) +
   geom_histogram()
+
+ggsave("figures/sex_ratio_fish_count.jpg")
 
 ## how many fish per year showing a creek: c creek ratio
 
-ggplot(fish_per_year, aes(x = Year, color = Location)) +
+creek_ratio_fish_count <- ggplot(fish_per_year, aes(x = Year, color = Location)) +
   geom_histogram()
 
+ggsave("figures/creek_ratio_fish_count.jpg")
 
 ######################################################################
 ######################################################################
@@ -55,17 +58,21 @@ acreek_fish_2005_return_time <- master_with_distance %>%
   filter(Location == "a")
 
 # C creek fish in *year*
-ccreek_fish_2010_return_time <- master_with_distance %>% 
-  filter(Year == "2010") %>%  ### Edit year here - then fix name to match year
+ccreek_fish_2005_return_time <- master_with_distance %>% 
+  filter(Year == "2005") %>%  ### Edit year here - then fix name to match year
   group_by(Tag) %>% 
   filter(Date == first(Date)) %>% 
   filter(Location == "c")
 
 ## create a scatter plot graph
-ggplot(acreek_fish_2005_last_day, aes(x = Date, y = midpoint, color = Sex)) +
-  geom_point()    # plot for a creek  - edit name to match year you want
-ggplot(ccreek_fish_2010_return_time, aes(x = Date, y = midpoint, color = Sex)) +
-  geom_point()    # plot for c creek - edit name to match year you want
+ggplot(acreek_fish_2005_return_time, aes(x = Date, y = midpoint, color = Sex)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 90, hjust =0.75))   # plot for a creek  - edit name to match year you want
+
+
+ggplot(ccreek_fish_2005_return_time, aes(x = Date, y = midpoint, color = Sex)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 90, hjust =0.75))    # plot for c creek - edit name to match year you want
 
 
 
@@ -82,12 +89,12 @@ fish_creek_stay_length <- master %>%
   summarise("" = n()) 
 
 
-ggplot(fish_creek_stay_length, aes(x = count)) +
+creek_stay_length <- ggplot(fish_creek_stay_length, aes(x = count)) +
   geom_histogram() +
   labs(x = "days") +
   scale_x_continuous(limits = c(0, 50))
 
-
+ggsave("figures/creek_stay_length.jpg")
 
 ######################################
 # How many fish per section each year#
@@ -102,26 +109,48 @@ location_count_2004_ccreek <- master %>%
   group_by(location_section) %>% 
   summarise("number_of_fish" = n())
 
-ggplot(location_count_2004_ccreek, aes(x = location_section, y = number_of_fish)) +
+fish_count_per_section_ccreek <- ggplot(location_count_2004_ccreek, aes(x = location_section, y = number_of_fish)) +
   geom_bar(stat = "identity") +
-  theme(axis.text.x = element_text(angle = 90, hjust =0.75))
+  theme(axis.text.x = element_text(angle = 90, hjust =0.75)) +
+  labs( x = "Location Section", y = "Number of fish")
+
+ggsave("figures/fish_count_per_section_ccreek.jpg")
 
 
 # same graph but opens the scope to showing all years by color
 
+
+# for c creek
 location_count_per_year_ccreek<- master %>% 
   select(Year, Location, location_section) %>% 
   filter(Location == "c" ) %>%    #### Change the year or creek here!!!! Then change the name accordingly
   group_by(location_section, Year) %>% 
   summarise("number_of_fish" = n())
 
-ggplot(location_count_per_year_ccreek, aes(x = location_section, y = number_of_fish, color = Year)) +
+count_per_section_per_year_ccreek <- ggplot(location_count_per_year_ccreek, aes(x = location_section, y = number_of_fish, color = Year)) +
   geom_bar(stat = "identity") +
-  theme(axis.text.x = element_text(angle = 90, hjust =0.75))
+  labs(x = "") +
+  theme(axis.text.x = element_text(angle = 90, hjust =0.75)) +
+  labs( x = "Location Section", y = "Number of fish")
+
+ggsave("figures/count_per_section_per_year_ccreek.jpg")
 
 ### not as helpful or insightful as i thought it'd be... lol
 
+# for a creek
+location_count_per_year_acreek<- master %>% 
+  select(Year, Location, location_section) %>% 
+  filter(Location == "a" ) %>%    #### Change the year or creek here!!!! Then change the name accordingly
+  group_by(location_section, Year) %>% 
+  summarise("number_of_fish" = n())
 
-View(location_count_per_year_ccreek)
+count_per_section_per_year_ccreek <- ggplot(location_count_per_year_acreek, aes(x = location_section, y = number_of_fish, color = Year)) +
+  geom_bar(stat = "identity") +
+  labs(x = "") +
+  theme(axis.text.x = element_text(angle = 90, hjust =0.75)) +
+  labs( x = "Location Section", y = "Number of fish")
+
+ggsave("figures/count_per_section_per_year_acreek.jpg")
+
 
 
