@@ -1,0 +1,192 @@
+---
+title: "AlaskaSalmon"
+author: "Andrea Odell"
+date: "May 25, 2018"
+output: html_document
+---
+
+
+# Alaska Salmon
+
+This project is part of a class exercise where we create mini projects of our own. My project uses salmon spatial and biological data from A and C creek in Alaska collected from 2004 to 2016.
+
+
+## Setting Up
+
+
+We read in the file that we have that contains the spatial and biological data as well as the file that interprets spatial data into more recognizeable numerical values 
+
+
+```{r setup, include = FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+```{r input_files}
+master <- read.csv("data/autocorrelation_sections_corrected_051118_final.csv", na.strings = "NA")
+distances <- read.csv("data/creek_midpoint.csv")
+```
+
+
+
+## Cleaning up raw data
+
+```{r cleanup}
+
+
+## adding a column for distance of fish based on location_section
+master_with_distance <-  cbind(master,midpoint=rep(master$location_section))
+
+
+### replace section location values in midpoint column with midpoint values.
+master_with_distance$midpoint <- distances$midpoint[match(master_with_distance$midpoint, distances$section)]
+
+
+#remove unnecessary data in Location and Sex column to merge similar vectors
+master_with_distance$Location[master_with_distance$Location == "A" |
+                                master_with_distance$Location == "amouth" |
+                                master_with_distance$Location == "am" |
+                                master_with_distance$Location == "abeach"] <- "a"
+master_with_distance$Location[master_with_distance$Location == "cm" |
+                                master_with_distance$Location == "cbeach" |
+                                master_with_distance$Location == "cmouth"] <- "c"
+
+tolower <- master_with_distance$Sex
+target_sex <- c("f", "m")
+master_with_distance <- master_with_distance %>% 
+  filter(Sex %in% target_sex)
+
+```
+
+
+## Population dynamics
+
+First, we will look at the ratio of males to females total in both creeks combined. Then, we will look at the ratio of fish found in a vs c creek.
+
+
+```{r ratio}
+
+## subsetting data we need
+
+fish_per_year <- master_with_distance %>% 
+  group_by(Year)
+
+### How many fish per year showing m:f ratio
+
+sex_ratio_fish_count <- ggplot(fish_per_year, aes(x = Year, color = Sex)) +
+  geom_histogram()
+
+
+### how many fish per year showing a creek: c creek ratio
+
+creek_ratio_fish_count <- ggplot(fish_per_year, aes(x = Year, color = Location)) +
+  geom_histogram()
+
+
+```
+
+
+## Return times and distances each year between creeks
+
+We must look at each creek and year separately. This didn't reveal ny trends but data may need more cleaning up. **MUST** make edits to years and names accordingly when using this code. *The only year's available are 2004-2016*.
+
+
+```{r return_times}
+
+# A creek fish in *year* 
+acreek_fish_2005_return_time <- master_with_distance %>% 
+  filter(Year == "2005") %>%    ### Edit year here - then fix name to match year
+  group_by(Tag) %>% 
+  filter(Date == first(Date)) %>% 
+  filter(Location == "a")
+
+# C creek fish in *year*
+ccreek_fish_2005_return_time <- master_with_distance %>% 
+  filter(Year == "2005") %>%  ### Edit year here - then fix name to match year
+  group_by(Tag) %>% 
+  filter(Date == first(Date)) %>% 
+  filter(Location == "c")
+
+## create a scatter plot graph
+ggplot(acreek_fish_2005_return_time, aes(x = Date, y = midpoint, color = Sex)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 90, hjust =0.75))   # plot for a creek  - edit name to match year you want
+
+
+ggplot(ccreek_fish_2005_return_time, aes(x = Date, y = midpoint, color = Sex)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 90, hjust =0.75))    # plot for c creek - edit name to match year you want
+
+```
+
+
+## Length of stay in creek
+
+Determine the distribution of time that fish stay in the creek. Would be cool to look into male to female ratios in future, but I couldn't figure out the code. (When summarising fish to have the number of days in stream, the column for sex would disappear)
+
+```{r length}
+
+## looks at all years at once...
+
+fish_creek_stay_length <- master %>% 
+  #filter(Year == xxxx) %>%     ### remove hastag if you want to specify a year
+  select(Year_Tag, Sex) %>% 
+  group_by(Year_Tag) %>% 
+  summarise("count" = n())
+
+
+ggplot(fish_creek_stay_length, aes(x = count)) +
+  geom_histogram() +
+  labs(x = "days") +
+  scale_x_continuous(limits = c(0, 50))
+```
+
+## Fish Density in section between years
+
+A high fish density could mean preferable location of redds. More questions about density dependence can be asked, including how it affects the precision of homing. Again, it is important to change the year or creek section accordingly!!!
+
+```{r density}
+
+location_count_2004_ccreek <- master %>% 
+  select(Year, Location, location_section) %>% 
+  filter(Year == 2004, Location == "c" ) %>%    #### Change the year or creek here!!!! Then change the name accordingly
+  group_by(location_section) %>% 
+  summarise("number_of_fish" = n())
+
+fish_count_per_section_ccreek <- ggplot(location_count_2004_ccreek, aes(x = location_section, y = number_of_fish)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust =0.75)) +
+  labs( x = "Location Section", y = "Number of fish")
+```
+
+A more detailed look at the section density but showing how it varies per year
+
+```{r density_year}
+# for c creek
+location_count_per_year_ccreek<- master %>% 
+  select(Year, Location, location_section) %>% 
+  filter(Location == "c" ) %>%    #### Change the year or creek here!!!! Then change the name accordingly
+  group_by(location_section, Year) %>% 
+  summarise("number_of_fish" = n())
+
+ggplot(location_count_per_year_ccreek, aes(x = location_section, y = number_of_fish, color = Year)) +
+  geom_bar(stat = "identity") +
+  labs(x = "") +
+  theme(axis.text.x = element_text(angle = 90, hjust =0.75)) +
+  labs( x = "Location Section", y = "Number of fish")
+
+
+# for a creek
+location_count_per_year_acreek<- master %>% 
+  select(Year, Location, location_section) %>% 
+  filter(Location == "a" ) %>%    #### Change the year or creek here!!!! Then change the name accordingly
+  group_by(location_section, Year) %>% 
+  summarise("number_of_fish" = n())
+
+ggplot(location_count_per_year_acreek, aes(x = location_section, y = number_of_fish, color = Year)) +
+  geom_bar(stat = "identity") +
+  labs(x = "") +
+  theme(axis.text.x = element_text(angle = 90, hjust =0.75)) +
+  labs( x = "Location Section", y = "Number of fish")
+
+```
