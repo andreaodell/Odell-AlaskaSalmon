@@ -86,7 +86,7 @@ fish_creek_stay_length <- master %>%
   #filter(Year == xxxx) %>%     ### remove hastag if you want to specify a year
   select(Year_Tag, Sex) %>% 
   group_by(Year_Tag) %>% 
-  summarise("" = n()) 
+  summarise("count" = n())
 
 
 creek_stay_length <- ggplot(fish_creek_stay_length, aes(x = count)) +
@@ -95,6 +95,7 @@ creek_stay_length <- ggplot(fish_creek_stay_length, aes(x = count)) +
   scale_x_continuous(limits = c(0, 50))
 
 ggsave("figures/creek_stay_length.jpg")
+
 
 ######################################
 # How many fish per section each year#
