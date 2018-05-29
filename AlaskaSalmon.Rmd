@@ -68,7 +68,7 @@ First, we will look at the ratio of males to females total in both creeks combin
 
 ## subsetting data we need
 
-fish_per_year <- master_with_distance %>% 
+master_with_distance %>% 
   group_by(Year)
 
 ### How many fish per year showing m:f ratio
@@ -79,7 +79,7 @@ sex_ratio_fish_count <- ggplot(fish_per_year, aes(x = Year, color = Sex)) +
 
 ### how many fish per year showing a creek: c creek ratio
 
-creek_ratio_fish_count <- ggplot(fish_per_year, aes(x = Year, color = Location)) +
+ggplot(fish_per_year, aes(x = Year, color = Location)) +
   geom_histogram()
 
 
