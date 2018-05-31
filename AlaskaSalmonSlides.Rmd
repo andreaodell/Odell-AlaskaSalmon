@@ -192,13 +192,15 @@ location_count_per_year_ccreek<- master %>%
   group_by(location_section, Year) %>% 
   summarise("number_of_fish" = n())
 
-ggplot(location_count_per_year_ccreek, aes(x = location_section, y = number_of_fish, color = Year)) +
+ggplot(location_count_per_year_ccreek, aes(x = location_section, y = number_of_fish)) +
   geom_bar(stat = "identity") +
   labs(x = "") +
   theme(axis.text.x = element_text(angle = 90, hjust =0.75)) +
-  labs( x = "Location Section", y = "Number of fish")
+  labs( x = "Location Section", y = "Number of fish") +
+  facet_wrap(~Year)
+```
 
-
+```{r density_year, echo = FALSE}
 # for a creek
 location_count_per_year_acreek<- master %>% 
   select(Year, Location, location_section) %>% 
