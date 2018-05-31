@@ -184,6 +184,8 @@ ggplot(location_count_2004_ccreek, aes(x = location_section, y = number_of_fish)
 
 A more detailed look at the section density but showing how it varies per year
 
+For C creek
+
 ```{r density_year, echo = FALSE}
 # for c creek
 location_count_per_year_ccreek<- master %>% 
@@ -200,7 +202,12 @@ ggplot(location_count_per_year_ccreek, aes(x = location_section, y = number_of_f
   facet_wrap(~Year)
 ```
 
-```{r density_year, echo = FALSE}
+
+## Fish Density (cont.)
+
+for A creek
+
+```{r density_year2, echo = FALSE}
 # for a creek
 location_count_per_year_acreek<- master %>% 
   select(Year, Location, location_section) %>% 
