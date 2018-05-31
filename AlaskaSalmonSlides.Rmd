@@ -24,6 +24,8 @@ We read in the file that we have that contains the spatial and biological data a
 ```{r setup, include = FALSE}
 library(ggplot2)
 library(dplyr)
+library(knitr)
+library(tidyr)
 ```
 
 ```{r input_files, cache = TRUE}
@@ -64,6 +66,19 @@ master_with_distance <- master_with_distance %>%
 
 ```
 
+
+##Tidyr
+
+``````{r tidyr}
+master_with_distance_tidyr <- master_with_distance %>% 
+  filter(Year == 2004) %>% 
+  select(Year, Year_Tag, Date, location_section) %>% 
+  spread(key = Date, value = location_section)
+
+kable(master_with_distance_tidyr) 
+
+
+```
 
 ## Population dynamics
 

@@ -4,6 +4,8 @@ master <- read.csv("data/autocorrelation_sections_corrected_051118_final.csv", n
 distances <- read.csv("data/creek_midpoint.csv")
 library(tidyverse)
 
+
+
 ## adding a column for distance of fish based on location_section
 master_with_distance <-  cbind(master,midpoint=rep(master$location_section))
 ### replace section location values in midpoint column with midpoint values.
@@ -23,6 +25,15 @@ tolower <- master_with_distance$Sex
 target_sex <- c("f", "m")
 master_with_distance <- master_with_distance %>% 
   filter(Sex %in% target_sex)
+
+
+## Tidyr
+
+master_with_distance_tidyr <- master_with_distance %>% 
+  select(Year, Year_Tag, Date, location_section) %>% 
+  filter(Year == 2004) %>% 
+  spread(key = Date, value = location_section)
+
 
 
 ### How many fish per year showing m:f ratio
