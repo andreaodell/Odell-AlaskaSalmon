@@ -145,11 +145,12 @@ location_count_per_year_acreek<- master %>%
   group_by(location_section, Year) %>% 
   summarise("number_of_fish" = n())
 
-count_per_section_per_year_ccreek <- ggplot(location_count_per_year_acreek, aes(x = location_section, y = number_of_fish, color = Year)) +
+count_per_section_per_year_ccreek <- ggplot(location_count_per_year_acreek, aes(x = location_section, y = number_of_fish)) +
   geom_bar(stat = "identity") +
   labs(x = "") +
   theme(axis.text.x = element_text(angle = 90, hjust =0.75)) +
-  labs( x = "Location Section", y = "Number of fish")
+  labs( x = "Location Section", y = "Number of fish") +
+  facet_wrap(~Year)
 
 ggsave("figures/count_per_section_per_year_acreek.jpg")
 
