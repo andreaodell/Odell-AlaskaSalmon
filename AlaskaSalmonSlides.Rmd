@@ -10,6 +10,10 @@ output: ioslides_presentation
 
 This project is part of a class exercise where we create mini projects of our own. My project uses salmon spatial and biological data from A and C creek in Alaska collected from 2004 to 2016.
 
+![](figures/sockeye.jpg)
+
+
+
 
 ## Setting Up
 
@@ -100,9 +104,9 @@ We must look at each creek and year separately. This didn't reveal any trends bu
 
 ## Return times (cont.)
 
-We will look at a creek during 2005
+We will look at a creek in 2005...
 
-```{r return_times, message = FALSE, echo = FALSE}
+```{r return_times, message = FALSE, warning = FALSE, echo = FALSE}
 
 # A creek fish in *year* 
 acreek_fish_2005_return_time <- master_with_distance %>% 
@@ -119,7 +123,9 @@ ggplot(acreek_fish_2005_return_time, aes(x = Date, y = midpoint, color = Sex)) +
 
 ## Return times (cont.)
 
-```{r return_times_cont, message = FALSE, echo = FALSE}
+and c creek in 2005
+
+```{r return_times_cont, message = FALSE, warning = FALSE, echo = FALSE}
 # C creek fish in *year*
 ccreek_fish_2005_return_time <- master_with_distance %>% 
   filter(Year == "2005") %>%  ### Edit year here - then fix name to match year
@@ -137,9 +143,9 @@ ggplot(ccreek_fish_2005_return_time, aes(x = Date, y = midpoint, color = Sex)) +
 
 ## Length of stay in creek
 
-Determine the distribution of time that fish stay in the creek. Would be cool to look into male to female ratios in future, but I couldn't figure out the code. (When summarising fish to have the number of days in stream, the column for sex would disappear)
+Determine the distribution of time that fish stay in the creek.
 
-```{r length, message = FALSE, echo = FALSE}
+```{r length, message = FALSE, warning = FALSE, echo = FALSE}
 
 ## looks at all years at once...
 
